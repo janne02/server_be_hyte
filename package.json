@@ -1,0 +1,27 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "package.json",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "testbe",
+    "dev":"nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/documents/server-be.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/documents/server-be/issues"
+  },
+  "homepage": "https://github.com/documents/server-be#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^3.0.3"
+
+  }
+}
