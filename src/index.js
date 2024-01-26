@@ -2,10 +2,13 @@
 import express from 'express';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import { getUsers, getUsersById, postLogin, postUser, putUser } from './users.mjs';
 const hostname = '127.0.0.1';
 const port = 3000;
 const app = express();
 
+
+app.use(express.json());
 // Staattinen sivusto palvelimen juureen (public-kansion sisältö näkyy osoitteessa http://127.0.0.1:3000/sivu.html)
 app.use(express.static('public'));
 const __filename = fileURLToPath(import.meta.url);
@@ -35,6 +38,17 @@ app.get('/items/:id', (req, res) => {
     let item = { id: req.params.id };
     res.json(item);
   });
+//users resource
+app.get('/users', getUsers)
+//get info of user
+app.get('/users/:id', getUsersById);
+//user register
+app.post('/users', postUser);
+// user login
+app.post('/users/login', postLogin);
+//update user
+app.put('/users/:id', putUser)
+
 
 // Itemin lisäys
 // POST http://127.0.0.1:3000/items/
