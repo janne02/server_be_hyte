@@ -14,10 +14,11 @@ const postLogin = async (req, res) => {
   }
   const match = await bcrypt.compare(password, user.password);
 
-  /* miksi ei toimi? bcrypt jostain syystä ei tahdo toimia
+  // miksi ei toimi? bcrypt jostain syystä ei tahdo toimia
 
-  const match = await bcrypt.compare(password, user.password);
+  //const match = await bcrypt.compare(password, user.password);
   if(match) {
+    delete user.password;
     const token = jwt.sign(user, process.env.JWT_SECRET, {expiresIn: '24H'});
     return res.json({message: 'logged in successfully', user, token});
   } else {
@@ -28,18 +29,18 @@ const postLogin = async (req, res) => {
         
     }
   };
-*/
+ /*
   if (password === user.password) {
     delete user.password;
-    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "24h" });
-    return res.json({ message: "logged in successfully", user, token });
+    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1024h" });
+    return res.json({ message: "logged in successfully", user, token });,
   } else {
     return res
       .status(401)
       .json({ error: 401, message: "invalid username or password" });
   }
 };
-
+*/
 const getMe = async (req, res) => {
   res.json({ user: req.user });
 };

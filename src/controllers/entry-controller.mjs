@@ -1,3 +1,4 @@
+import { validationResult } from "express-validator";
 import {
   listAllEntries,
   findEntryById,
@@ -29,53 +30,65 @@ const getEntryById = async (req, res) => {
 };
 
 const postEntry = async (req, res) => {
-  const { entry_date, mood, weight, sleep_hours, notes } = req.body;
-  if (entry_date && (weight || mood || sleep_hours || (notes && user_id))) {
-    try {
-      const userIdFromToken = req.user.user_id;
-      const newEntry = {
-        user_id: userIdFromToken,
-        entry_date,
-        mood,
-        weight,
-        sleep_hours,
-        notes,
-      };
-      const result = await addEntry(newEntry);
-      if (result.entry_id) {
-        return res.status(201).json({ message: "New entry added.", ...result });
-      } else {
-        return res.status(500).json(result);
-      }
-    } catch (error) {
-      console.error("Error adding new entry:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  } else {
-    return res.status(400).json({ error: 400, message: "Bad request" });
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    console.log('Invalid input', errors.array());
+    const error = new Error('Invalid input');
+    error.status = 400;
+    error.errors = validationErrors.errors;
+    return next(error);
   }
+  const {
+    entry_date,
+    mood,
+    weight,
+    sleep_hours,
+    notes } = req.body;
+  const user_id = req.user.user_id; 
+  const newEntry = {
+    user_id,
+    entry_date,
+    mood,
+    weight,
+    sleep_hours,
+    notes,
+  };
+  const result = await addEntry(newEntry);
+
+  if(result.error) {
+    const error = new Error(result.error);
+    error.status = 400;
+    return next(error);
+
+  }
+  res.status(201).json({ message: 'New entry added.', ...result});
+
 };
 const putEntry = async (req, res) => {
   const entry_id = req.params.id;
-  const { entry_date, mood, weight, sleep_hours, notes } = req.body;
-  if ((entry_date || weight || mood || sleep_hours || notes) && entry_id) {
-    try {
-      const userIdFromToken = req.user.user_id;
 
-      const entry = await findEntryById(entry_id);
-      if (!entry) {
-        return res.status(404).json({ error: "Entry not found" });
-      }
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
 
-      if (entry.user_id !== userIdFromToken) {
-        return res.status(403).json({ error: "Unauthorized" });
-      }
+  }
 
-      const result = await updateEntryById({ entry_id, ...req.body });
-      return res.status(201).json(result);
-    } catch (error) {
-      console.error("Error updating entry:", error);
-      return res.status(500).json({ error: "Internal server error" });
+if(entry_id) {
+  try {
+    const userIdFromToken = req.user.user_id;
+
+    const entry = await findEntryById(entry_id);
+    if(!entry) {
+      return req.status(404).json({ error: 'Entry not found' });
+    }
+    if(entry.user_id !== userIdFromToken) {
+      return res.status(403).json({ error: 'Unauthorized'});
+    }
+    const result = await updateEntryById({ entry_id, ...req.body});
+    return res.status(200).json(result);
+    } catch(error) {
+      console.error('Error updating entry:', error);
+      return res.status(500).json({ error: 'Internal server error'})
     }
   } else {
     return res.status(400).json({ error: 400, message: "Bad request" });

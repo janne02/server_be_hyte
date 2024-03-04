@@ -1,4 +1,5 @@
-import express from "express";
+import express from 'express';
+import {body} from 'express-validator';
 import { authenticateToken } from "../middlewares/authentication.mjs";
 
 import {
@@ -8,6 +9,7 @@ import {
   putUser,
   deleteUser,
 } from "../controllers/user-controller.mjs";
+
 
 const userRouter = express.Router();
 
@@ -19,7 +21,12 @@ userRouter
   // update user
   .put(authenticateToken, putUser)
   // user registration
-  .post(postUser);
+  .post(
+    body('username').trim().isLength({min: 3, max: 20}).isAlphanumeric(),
+    body('password').trim().isLength({min: 8, max: 128}),
+    body('email').trim().isEmail(),
+    postUser
+  );
 
 // /user/:id endpoint
 userRouter
