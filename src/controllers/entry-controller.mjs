@@ -1,3 +1,4 @@
+import {validationResult} from 'express-validator';
 import {
   listAllEntries,
   findEntryById,
@@ -5,20 +6,29 @@ import {
   deleteEntryById,
   updateEntryById,
   listAllEntriesById,
-} from "../models/entry-model.mjs";
-
+} from '../models/entry-model.mjs';
+//function to GET requests to retrieve entries
 const getEntries = async (req, res) => {
-  // return only logged in user's own entries
-  // - get user's id from token (req.user.user_id)
-  const result = await listAllEntriesById(req.user.user_id);
-  if (!result.error) {
+  try {
+    let result;
+    const userLevel = req.user.user_level;
+
+    if (userLevel === 'admin') {
+      // If user is admin, retrieve all entries
+      result = await listAllEntries();
+    } else {
+      // if not, retrieve only logged-in user's own entries
+      result = await listAllEntriesById(req.user.user_id);
+    }
+
     res.json(result);
-  } else {
-    res.status(500);
-    res.json(result);
+  } catch (error) {
+    console.error('Error getting entries:', error);
+    res.status(500).json({error: 'Internal Server Error'});
   }
 };
 
+//function to GET requests to retrieve entries by id
 const getEntryById = async (req, res) => {
   const entry = await findEntryById(req.params.id);
   if (entry) {
@@ -28,73 +38,98 @@ const getEntryById = async (req, res) => {
   }
 };
 
-const postEntry = async (req, res) => {
-  const { entry_date, mood, weight, sleep_hours, notes } = req.body;
-  if (entry_date && (weight || mood || sleep_hours || (notes && user_id))) {
-    try {
-      const userIdFromToken = req.user.user_id;
-      const newEntry = {
-        user_id: userIdFromToken,
-        entry_date,
-        mood,
-        weight,
-        sleep_hours,
-        notes,
-      };
-      const result = await addEntry(newEntry);
-      if (result.entry_id) {
-        return res.status(201).json({ message: "New entry added.", ...result });
-      } else {
-        return res.status(500).json(result);
-      }
-    } catch (error) {
-      console.error("Error adding new entry:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  } else {
-    return res.status(400).json({ error: 400, message: "Bad request" });
+//function to POST requests to add new entry
+const postEntry = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  // check if any validation errors
+  if (!errors.isEmpty()) {
+    console.log('postEntry errors', errors.array());
+    const error = new Error('Invalid input');
+    error.status = 400;
+    error.errors = validationErrors.errors;
+    return next(error);
   }
+
+  // get fields from request body
+  const {entry_date, mood, weight, sleep_hours, notes} = req.body;
+  // req.user is added by authenticateToken middleware
+  const user_id = req.user.user_id;
+  // combine fields into a new entry object
+  const newEntry = {user_id, entry_date, mood, weight, sleep_hours, notes};
+  const result = await addEntry(newEntry);
+
+  if (result.error) {
+    const error = new Error(result.error);
+    error.status = 400;
+    return next(error);
+  }
+
+  res.status(201).json({message: 'New entry added.', ...result});
 };
-const putEntry = async (req, res) => {
+
+//function to PUT requests to update entry
+const putEntry = async (req, res, next) => {
   const entry_id = req.params.id;
-  const { entry_date, mood, weight, sleep_hours, notes } = req.body;
-  if ((entry_date || weight || mood || sleep_hours || notes) && entry_id) {
+
+  // Check if any validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors: errors.array()});
+  }
+
+  if (entry_id) {
     try {
+      // get user_id
       const userIdFromToken = req.user.user_id;
 
       const entry = await findEntryById(entry_id);
       if (!entry) {
-        return res.status(404).json({ error: "Entry not found" });
+        return res.status(404).json({error: 'Entry not found'});
       }
-
+      // Check if the user ID from token matches the user ID
       if (entry.user_id !== userIdFromToken) {
-        return res.status(403).json({ error: "Unauthorized" });
+        return res.status(403).json({error: 'Unauthorized'});
       }
 
-      const result = await updateEntryById({ entry_id, ...req.body });
-      return res.status(201).json(result);
+      // If the user is authorized --> update entry
+      const result = await updateEntryById({entry_id, ...req.body});
+      return res.status(200).json(result);
     } catch (error) {
-      console.error("Error updating entry:", error);
-      return res.status(500).json({ error: "Internal server error" });
+      console.error('Error updating entry:', error);
+      return res.status(500).json({error: 'Internal server error'});
     }
   } else {
-    return res.status(400).json({ error: 400, message: "Bad request" });
+    return res.status(400).json({error: 400, message: 'Bad request'});
   }
 };
 
+//function to DELETE requests to delete entry
 const deleteEntry = async (req, res) => {
-  const entryId = req.params.id;
-
   try {
-    const userIdFromToken = req.user.user_id;
+    const entryId = req.params.id;
 
-    const entry = await findEntryById(entryId);
-    if (!entry) {
-      return res.status(404).json({ error: "Entry not found" });
+    // Check if the user is an administrator, they can delete anything.
+    if (req.user.user_level === 'admin') {
+      const result = await deleteEntryById(entryId);
+      if (result.error) {
+        return res.status(result.error).json(result);
+      }
+      return res.json(result);
     }
 
-    if (entry.user_id !== userIdFromToken) {
-      return res.status(403).json({ error: "Unauthorized" });
+    // Check if the user is deleting their own entry
+    const userId = req.user.user_id;
+    const entry = await getEntryById(entryId);
+
+    if (!entry) {
+      return res.status(404).json({error: 'Entry not found'});
+    }
+
+    if (entry.user_id !== userId) {
+      return res
+        .status(403)
+        .json({error: 'Unauthorized: You can only delete your own entries'});
     }
 
     const result = await deleteEntryById(entryId);
@@ -103,9 +138,9 @@ const deleteEntry = async (req, res) => {
     }
     return res.json(result);
   } catch (error) {
-    console.error("Error deleting entry:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    console.error('Error deleting entry:', error);
+    return res.status(500).json({error: 'Database error'});
   }
 };
 
-export { getEntries, getEntryById, postEntry, putEntry, deleteEntry };
+export {getEntries, getEntryById, postEntry, putEntry, deleteEntry};

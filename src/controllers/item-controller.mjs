@@ -1,4 +1,4 @@
-import items from "../models/item-model.mjs";
+import items from '../models/item-model.mjs';
 
 const getItems = (req, res) => {
   res.json(items);
@@ -12,22 +12,22 @@ const getItemById = (req, res) => {
   if (itemFound) {
     res.json(itemFound);
   } else {
-    res.status(404).json({ error: "not found" });
+    res.status(404).json({error: 'not found'});
   }
 };
 
 const postItem = (req, res) => {
   // lisää postattu item items-taulukkoon
-  console.log("postItem request body", req.body);
+  console.log('postItem request body', req.body);
   // error if name property is missing
   if (!req.body.name) {
-    return res.status(400).json({ error: "item name missing" });
+    return res.status(400).json({error: 'item name missing'});
   }
   // new id: add 1 to last id number in the items array
   const newId = items[items.length - 1].id + 1;
-  const newItem = { id: newId, name: req.body.name };
+  const newItem = {id: newId, name: req.body.name};
   items.push(newItem);
-  res.status(201).json({ message: "item created" });
+  res.status(201).json({message: 'item created'});
 };
 
 const deleteItem = (req, res) => {
@@ -37,8 +37,8 @@ const deleteItem = (req, res) => {
     return res.sendStatus(404);
   }
   const deletedItems = items.splice(index, 1);
-  console.log("deleteItem:", deletedItems);
-  res.json({ deleted_item: deletedItems[0] });
+  console.log('deleteItem:', deletedItems);
+  res.json({deleted_item: deletedItems[0]});
   // or successful response without any content
   // res.sendStatus(204);
 };
@@ -52,10 +52,10 @@ const putItem = (req, res) => {
   }
   // bad request
   if (!req.body.name) {
-    return res.status(400).json({ error: "item name missing" });
+    return res.status(400).json({error: 'item name missing'});
   }
   items[index].name = req.body.name;
-  res.json({ updated_item: items[index] });
+  res.json({updated_item: items[index]});
 };
 
-export { getItems, getItemById, postItem, deleteItem, putItem };
+export {getItems, getItemById, postItem, deleteItem, putItem};
