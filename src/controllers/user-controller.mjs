@@ -43,28 +43,24 @@ const getUserById = async (req, res) => {
 //function to handle POST requests to create new user
 const postUser = async (req, res, next) => {
   const {username, password, email} = req.body;
-  // const user_level = 'admin';
   const validationErrors = validationResult(req);
+
   // check that all needed fields are included in request
   if (validationErrors.isEmpty()) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const result = await insertUser(
-      {
-        username,
-        email,
-        password: hashedPassword,
-        // user_level
-      },
-      next,
-    );
+    const result = await insertUser({
+      username,
+      email,
+      password: hashedPassword
+    },next );
 
     return res.status(201).json(result);
   } else {
     const error = new Error('bad request');
     error.status = 400;
     error.errors = validationErrors.errors;
-    return next(error);
+    return next (error);
   }
 };
 // only user authenticated by token can update or modify own data
