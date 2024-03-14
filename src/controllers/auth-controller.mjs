@@ -16,7 +16,6 @@ const postLogin = async (req, res) => {
 
   // miksi ei toimi? bcrypt jostain syystä ei tahdo toimia
 
-  //const match = await bcrypt.compare(password, user.password);
   if (match) {
     delete user.password;
     const token = jwt.sign(user, process.env.JWT_SECRET, {
