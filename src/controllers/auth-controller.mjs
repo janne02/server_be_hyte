@@ -26,18 +26,7 @@ const postLogin = async (req, res) => {
     return next(customError('Invalid username or password', 401));
   }
 };
-/*
-  if (password === user.password) {
-    delete user.password;
-    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1024h" });
-    return res.json({ message: "logged in successfully", user, token });
-  } else {
-    return res
-      .status(401)
-      .json({ error: 401, message: "invalid username or password" });
-  }
-};
-*/
+
 const getMe = async (req, res) => {
   res.json({user: req.user});
 };
