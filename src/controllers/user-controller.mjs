@@ -68,7 +68,6 @@ const putUser = async (req, res) => {
   //get userinfo from req.user object extracted from token
   const user_id = req.user.user_id;
   const {username, password, email} = req.body;
-
   //hash password if included in request
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
