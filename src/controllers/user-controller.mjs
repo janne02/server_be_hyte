@@ -31,7 +31,6 @@ const getUsers = async (req, res) => {
     res.status(500).json({error: 'Internal Server Error'});
   }
 };
-
 //functions to fetch users by id
 const getUserById = async (req, res) => {
   const result = await selectUserById(req.params.id);
@@ -116,5 +115,4 @@ const deleteUser = async (req, res) => {
     return res.status(500).json({error: 'Internal Server Error'});
   }
 };
-
 export {getUsers, getUserById, postUser, putUser, deleteUser};

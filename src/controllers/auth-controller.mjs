@@ -26,7 +26,6 @@ const postLogin = async (req, res) => {
     return next(customError('Invalid username or password', 401));
   }
 };
-
 const getMe = async (req, res) => {
   res.json({user: req.user});
 };
