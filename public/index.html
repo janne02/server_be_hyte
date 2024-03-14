@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <script type="module" crossorigin src="/assets/main-xtCk-4FE.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/style-7vk4dpaG.js">
+    <link rel="stylesheet" crossorigin href="/assets/style-U97wJl2T.css">
+  </head>
+  <body>
+    <ul>
+      <li style="float: right" class="active logout"><a href="#" id="logout">Logout</a></li>
+      <li id="darkModeToggle"><a href="#">Dark Mode</a></li>
+    </ul>
+    <script src="darkmode.js"></script>
+    <!-- <div id="app"></div> -->
+
+    <div class="user">Kirjautunut käyttäjä: <span id="name">NIMI TÄHÄN</span></div>
+  
+    
+        <!-- and so on... -->
+        <!-- Delete nappula poistaa käyttäjän-->
+        <!-- käytämme tässä apuna data-attribuutteja-->
+        <!-- # Delete user
+              DELETE http://127.0.0.1:3000/users/:id
+        -->
+      </tbody>
+    </table>
+
+    <div class="forms">
+      <div style="flex: 1">
+        <h3>Get information about your userdata</h3>
+        <pre><code>
+          Get your own userdata, ask admin for account deletion if needed
+          </code></pre>
+
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>User Level</th>
+              <th>Info</th>
+              <th>Delete</th>
+              <th>ID</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <!-- tänne haetaan kaikki käyttäjät -->
+            <!-- # Get all users -->
+            <!-- GET http://127.0.0.1:3000/api/users -->
+          </tbody>
+        </table>
+
+        <button class="get_users">Hae users tiedot</button>
+      </div>
+      
+      <div style="flex: 1">
+        <h3>Update your userdata</h3>
+
+        <p>
+          
+        </p>
+
+        <pre><code>
+         Update your own data, if you are admin you can change any users data
+          </code></pre>
+
+        <form class="addform">
+          <!-- tänne formi -->
+          <form class="addform">
+            <label for="username">Username</label><br>
+            <input type="text" id="username" name="username" placeholder="test-update4"><br><br>
+  
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" placeholder="test-pw-update4"><br><br>
+  
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" placeholder="update4@example.com"><br><br>
+      
+            <button type="button" id="putUserButton">Update user data</button>
+          
+          </div>
+          </form>
+        </div>
+      </div>
+      
+        </form>
+      </div>
+    </div>
+    
+      <div class="container">
+      <h3>Add diaryentries for user</h3>
+      <p>You can enter your information for healthdiary here</p>
+      <form class="addform1">
+            <label for="entry_date">Date</label><br>
+            <input type="date" id="entry_date" name="entry_date"><br><br>
+  
+            <label for="mood">What is your current mood?</label><br>
+            <input type="text" id="mood" name="mood"><br><br>
+
+            <label for="weight">How much you weight (kg)</label><br>
+            <input type="number" id="weight" name="weight" step="0.1"><br><br>
+
+            <label for="sleep_hours">How many hours did you sleep?</label><br>
+            <input type="number" id="sleep_hours" name="sleep_hours" step="0.1"><br><br>
+
+            <label for="notes">Add notes</label><br>
+            <input type="text" id="notes" name="password"><br><br>
+
+            <button type="submit" id="addEntry">Add Diary</button>
+
+            
+          <!-- https://www.w3schools.com/css/css_form.asp -->
+          <!-- https://www.w3schools.com/css/tryit.asp?filename=trycss_form_padding -->
+      
+          <!-- formin avulla testaamme create ja update user reittejä -->
+        </form>
+   
+      </div>
+    </div>
+  </div>
+    <dialog class="info_dialog">
+      <p>
+        <!-- tänne haetaan yksittäinen valittu käyttäjät -->      
+        <div>UserID: <span>Id</span></div>
+        <div>UserName: <span>Username</span></div>
+        <div>Email: <span>Email</span></div>
+        <div>Role: <span>Role</span></div> 
+      </p>
+      <button autofocus>Close</button>
+    </dialog>
+  
+  
+    <div class="container2">
+    <H3>HealthDiary</H3>
+    <p>Users diaryentries, admins can modify/delete if requested</p>
+    <button class="get_entry">Show entries</button>
+    <table class="styled-table">
+          <thead>
+            <tr> 
+              <th>entry_id</th>
+              <th>entry_date</th>
+              <th>mood</th>
+              <th>weight</th>
+              <th>sleep_hours</th>
+              <th>notes</th> 
+              <th>created_at</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody class="tbody1">
+          </div>
+          
+  
+  </body>
+  
+</html>
