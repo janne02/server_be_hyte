@@ -102,6 +102,4 @@ DELETE /api/entries/:id
 I couldnt get it working that when user deletes their own account it doesnt logout and you need to manually press logout button to finalize user deletion
 
 # Contributors
-course teachers: Matti Peltoniemi and Ulla Sederlöf at Metropolia UAS.
-
-jhgsjhsgjhjghs
+Course teachers: Matti Peltoniemi and Ulla Sederlöf at Metropolia UAS.
