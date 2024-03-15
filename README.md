@@ -22,7 +22,7 @@ https://hyte-janne.northeurope.cloudapp.azure.com/docs/
 
 
 # Get all users (token required)
-Regular user can only get his own data but admin can get everyones data
+Regular user can only retrieve his own data while admins have access to all users data. 
 
 GET https://hyte-janne.northeurope.cloudapp.azure.com/api/users
 
@@ -86,7 +86,7 @@ Application has button for darkmode on ul
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/32f941ad-24b7-4784-95af-f843301e4a31)
 
 # Get all entries (token required)
-Regular user can only get his own entries but admin can get everyones entries
+Regular users can only retrieve their own entries, while admins have access to all entries.
 GET https://hyte-janne.northeurope.cloudapp.azure.com/api/auth/entries
 
 GET https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id
