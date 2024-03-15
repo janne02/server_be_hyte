@@ -105,42 +105,12 @@ const putEntry = async (req, res, next) => {
 };
 
 //function to DELETE requests to delete entry
-const deleteEntry = async (req, res) => {
-  try {
-    const entryId = req.params.id;
-
-    // Check if the user is an administrator, they can delete anything.
-    if (req.user.user_level === 'admin') {
-      const result = await deleteEntryById(entryId);
-      if (result.error) {
-        return res.status(result.error).json(result);
-      }
-      return res.json(result);
-    }
-
-    // Check if the user is deleting their own entry
-    const userId = req.user.user_id;
-    const entry = await getEntryById(entryId);
-
-    if (!entry) {
-      return res.status(404).json({error: 'Entry not found'});
-    }
-
-    if (entry.user_id !== userId) {
-      return res
-        .status(403)
-        .json({error: 'Unauthorized: You can only delete your own entries'});
-    }
-
-    const result = await deleteEntryById(entryId);
-    if (result.error) {
-      return res.status(result.error).json(result);
-    }
-    return res.json(result);
-  } catch (error) {
-    console.error('Error deleting entry:', error);
-    return res.status(500).json({error: 'Database error'});
+const deleteEntry = async (req, res, next) => {
+  const result = await deleteEntryById(req.params.id, req.user.user_id);
+  if (result.error) {
+    return next(customError(result.message, result.error));
   }
+  return res.json(result);
 };
 
 export {getEntries, getEntryById, postEntry, putEntry, deleteEntry};
