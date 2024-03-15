@@ -12,7 +12,6 @@ pm2 start src/index.js
 
 https://hyte-janne.northeurope.cloudapp.azure.com/home.html
 
-
 # Link to API Documentation
 
 https://hyte-janne.northeurope.cloudapp.azure.com/docs/
