@@ -25,6 +25,7 @@ https://hyte-janne.northeurope.cloudapp.azure.com/docs/
 Regular user can only get his own data but admin can get everyones data
 
 GET /api/users
+
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/55cab403-d8b0-4e45-98ac-40f1a8287fb6)
 
 # Get user dialog (token required)
