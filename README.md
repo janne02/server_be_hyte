@@ -23,17 +23,20 @@ https://hyte-janne.northeurope.cloudapp.azure.com/docs/
 
 # Get all users (token required)
 Regular user can only get his own data but admin can get everyones data
+
 GET /api/users
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/55cab403-d8b0-4e45-98ac-40f1a8287fb6)
 
 # Get user dialog (token required)
 GET /api/users/:id
+
 Regular user can read his own data from dialog page that is visible after pressing info button. Admin can view everyones dialog.
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/755f1c48-2a83-4a1a-a837-846135294b41)
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/0056a99c-9b16-45e0-b40d-a618eb1b7e36)
 
 # Delete user dialog (token required)
 DELETE /api/users/:id
+
 Regular user can delete their own account, admin user can delete any account.
 admin/user must delete diaryentries first
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/6c87e200-38cb-4b63-a0c8-ca6b71ed2386)
