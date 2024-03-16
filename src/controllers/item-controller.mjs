@@ -6,9 +6,7 @@ const getItems = (req, res) => {
 
 // palauta vain se objekti, jonka id vastaa pyydettyä, muuten 404
 const getItemById = (req, res) => {
-  // console.log('requested item id', req.params.id);
   const itemFound = items.find((item) => item.id == req.params.id);
-  // console.log('found item', itemFound);
   if (itemFound) {
     res.json(itemFound);
   } else {
