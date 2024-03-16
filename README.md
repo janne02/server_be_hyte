@@ -105,5 +105,8 @@ DELETE https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id
 # Known bugs / issues
 I encountered difficulty implementing automatic logout when a user deletes his/hers own account.
 
+# References
+Dark mode tutorial youtube video
+
 # Contributors
 Course teachers: Matti Peltoniemi and Ulla Sederlöf at Metropolia UAS.
