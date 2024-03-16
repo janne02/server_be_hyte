@@ -12,12 +12,11 @@ const getEntries = async (req, res) => {
   try {
     let result;
     const userLevel = req.user.user_level;
-
+      // Retrieve all entries if user is admin
     if (userLevel === 'admin') {
-      // If user is admin, retrieve all entries
       result = await listAllEntries();
     } else {
-      // if not, retrieve only logged-in user's own entries
+      // Retrieve only logged-in user's entries if not admin
       result = await listAllEntriesById(req.user.user_id);
     }
 
@@ -42,7 +41,7 @@ const getEntryById = async (req, res) => {
 const postEntry = async (req, res, next) => {
   const errors = validationResult(req);
 
-  // check if any validation errors
+  // check for validation errors
   if (!errors.isEmpty()) {
     console.log('postEntry errors', errors.array());
     const error = new Error('Invalid input');
@@ -51,11 +50,11 @@ const postEntry = async (req, res, next) => {
     return next(error);
   }
 
-  // get fields from request body
+   // Extract fields from request body
   const {entry_date, mood, weight, sleep_hours, notes} = req.body;
-  // req.user is added by authenticateToken middleware
+  // User ID added by authenticateToken middleware
   const user_id = req.user.user_id;
-  // combine fields into a new entry object
+   // Combine fields into a new entry object
   const newEntry = {user_id, entry_date, mood, weight, sleep_hours, notes};
   const result = await addEntry(newEntry);
 
@@ -72,7 +71,7 @@ const postEntry = async (req, res, next) => {
 const putEntry = async (req, res, next) => {
   const entry_id = req.params.id;
 
-  // Check if any validation errors
+  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
@@ -80,19 +79,17 @@ const putEntry = async (req, res, next) => {
 
   if (entry_id) {
     try {
-      // get user_id
       const userIdFromToken = req.user.user_id;
 
       const entry = await findEntryById(entry_id);
       if (!entry) {
         return res.status(404).json({error: 'Entry not found'});
       }
-      // Check if the user ID from token matches the user ID
+      // Check if the userId from token matches the userId
       if (entry.user_id !== userIdFromToken) {
         return res.status(403).json({error: 'Unauthorized'});
       }
-
-      // If the user is authorized --> update entry
+      // If the user is authorized, update the entry
       const result = await updateEntryById({entry_id, ...req.body});
       return res.status(200).json(result);
     } catch (error) {
@@ -104,7 +101,7 @@ const putEntry = async (req, res, next) => {
   }
 };
 
-//function to DELETE requests to delete entry
+// Function to handle DELETE requests for deleting an entry
 const deleteEntry = async (req, res, next) => {
   const result = await deleteEntryById(req.params.id, req.user.user_id);
   if (result.error) {
