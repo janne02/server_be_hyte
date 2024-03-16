@@ -65,6 +65,7 @@ content-type: application/json
 
 # Update existing userdata (token required)
 Updates are visible after user presses getusers button
+
 PUT https://hyte-janne.northeurope.cloudapp.azure.com/api/users/
 Authorization: Bearer <token>
 content-type: application/json
