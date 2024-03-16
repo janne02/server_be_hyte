@@ -108,6 +108,7 @@ I encountered difficulty implementing automatic logout when a user deletes his/h
 
 # References
 Dark mode tutorial youtube video
+W3schools.com
 
 # Contributors
 Course teachers: Matti Peltoniemi and Ulla Sederlöf at Metropolia UAS.
