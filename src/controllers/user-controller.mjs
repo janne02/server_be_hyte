@@ -13,10 +13,9 @@ const getUsers = async (req, res) => {
   try {
     let result;
     const userLevel = req.user.user_level;
-    const userId = req.user.user_id; // Get the user ID of the logged-in user
-
-    if (userLevel === 'admin') {
+    const userId = req.user.user_id; 
       // If user is admin, retrieve all entries
+    if (userLevel === 'admin') {
       result = await listAllUsers();
     } else {
       // If not admin, retrieve only the logged-in user's data
@@ -44,7 +43,7 @@ const postUser = async (req, res, next) => {
   const {username, password, email} = req.body;
   const validationErrors = validationResult(req);
 
-  // check that all needed fields are included in request
+  // Check that all required fields are included in the request
   if (validationErrors.isEmpty()) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -56,22 +55,23 @@ const postUser = async (req, res, next) => {
 
     return res.status(201).json(result);
   } else {
+  // Handle validation errors
     const error = new Error('bad request');
     error.status = 400;
     error.errors = validationErrors.errors;
     return next (error);
   }
 };
-// only user authenticated by token can update or modify own data
+// Only authenticated users can update or modify their own data
 const putUser = async (req, res) => {
-  //get userinfo from req.user object extracted from token
+  // Get user info from req.user object extracted from the token
   const user_id = req.user.user_id;
   const {username, password, email} = req.body;
-  //hash password if included in request
+  // Hash the password if included in the request
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  // check that all needed fields are included in request
+  // Check that all required fields are included in the request
   if (user_id && username && password && email) {
     const result = await updateUserById({
       user_id,
