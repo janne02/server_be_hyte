@@ -48,18 +48,21 @@ const postUser = async (req, res, next) => {
   if (validationErrors.isEmpty()) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const result = await insertUser({
-      username,
-      email,
-      password: hashedPassword
-    },next );
+    const result = await insertUser(
+      {
+        username,
+        email,
+        password: hashedPassword,
+      },
+      next,
+    );
 
     return res.status(201).json(result);
   } else {
     const error = new Error('bad request');
     error.status = 400;
     error.errors = validationErrors.errors;
-    return next (error);
+    return next(error);
   }
 };
 // only user authenticated by token can update or modify own data
@@ -89,30 +92,11 @@ const putUser = async (req, res) => {
 };
 //function to DELETE requests to delete user by id
 const deleteUser = async (req, res) => {
-  try {
-    // Get the user's role (user_level) from the request object
-    const userLevel = req.user.user_level;
-
-    // Check if the user is an admin
-    if (userLevel !== 'admin') {
-      return res
-        .status(403)
-        .json({error: 'Unauthorized: Only admins can delete users'});
-    }
-
-    // Proceed with deleting the user
-    const result = await deleteUserById(req.params.id);
-
-    // Check if there was an error while deleting the user
-    if (result.error) {
-      return res.status(result.error).json(result);
-    }
-
-    // User deleted successfully
-    return res.json(result);
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    return res.status(500).json({error: 'Internal Server Error'});
+  const result = await deleteUserById(req.params.id);
+  if (result.error) {
+    return res.status(result.error).json(result);
   }
+  return res.json(result);
 };
+
 export {getUsers, getUserById, postUser, putUser, deleteUser};

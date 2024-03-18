@@ -4,7 +4,7 @@ import {getMe, postLogin} from '../controllers/auth-controller.mjs';
 import {authenticateToken} from '../middlewares/authentication.mjs';
 
 /**
- * @api {get} /api/resource/:id Request Resource information
+ * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/resource/:id Request Resource information
  * @apiName GetResource
  * @apiGroup Resource
  *
@@ -39,7 +39,7 @@ const authRouter = express.Router();
  */
 authRouter
   /**
-   * @api {post} /login Login
+   * @api {post} https://hyte-janne.northeurope.cloudapp.azure.com/api/users/login Login
    * @apiVersion 1.0.0
    * @apiName PostLogin
    * @apiGroup Authentication
@@ -88,7 +88,7 @@ authRouter
   )
 
   /**
-   * @api {get} /auth/me Request information about current user
+   * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/auth/me Request information about current user
    * @apiVersion 1.0.0
    * @apiName GetMe
    * @apiGroup Authentication

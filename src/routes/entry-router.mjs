@@ -12,7 +12,7 @@ import { body } from 'express-validator';
 const entryRouter = express.Router();
 
 /**
- * @api {get} /entries Retrieve All Entries
+ * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/entries Retrieve All Entries
  * @apiVersion 1.0.0
  * @apiName GetEntries
  * @apiGroup Entries
@@ -46,7 +46,7 @@ const entryRouter = express.Router();
 entryRouter.route('/').get(authenticateToken, getEntries)
 
  /**
-     * @api {post} /entries Create a new Entry
+     * @api {post} https://hyte-janne.northeurope.cloudapp.azure.com/api/entries Create a new Entry
      * @apiVersion 1.0.0
      * @apiName PostEntry
      * @apiGroup Entries
@@ -93,7 +93,7 @@ entryRouter.route('/:id')
   .get(getEntryById)
 
   /**
- * @api {get} /entries/:id Retrieve Entry by ID
+ * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id Retrieve Entry by ID
  * @apiVersion 1.0.0
  * @apiName GetEntryById
  * @apiGroup Entries
@@ -127,7 +127,7 @@ entryRouter.route('/:id')
   body('notes').optional().isString(),
   authenticateToken, putEntry)
 /**
- * @api {put} /entries/:id Update Entry by ID
+ * @api {put} https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id Update Entry by ID
  * @apiVersion 1.0.0
  * @apiName PutEntry
  * @apiGroup Entries
@@ -166,7 +166,7 @@ entryRouter.route('/:id')
 
   .delete(authenticateToken, deleteEntry);
    /**
-     * @api {delete} /entries/:id Delete Entry by ID
+     * @api {delete} https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id Delete Entry by ID
      * @apiVersion 1.0.0
      * @apiName DeleteEntry
      * @apiGroup Entries

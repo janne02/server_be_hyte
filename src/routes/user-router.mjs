@@ -15,7 +15,7 @@ import {
 const userRouter = express.Router();
 
 /**
- * @api {get} /user Get All Users
+ * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/user Get All Users
  * @apiVersion 1.0.0
  * @apiName GetUsers
  * @apiGroup User
@@ -59,7 +59,7 @@ userRouter.route('/')
 
 
 /**
- * @api {put} /user Update User
+ * @api {put} https://hyte-janne.northeurope.cloudapp.azure.com/api/user Update User
  * @apiVersion 1.0.0
  * @apiName PutUser
  * @apiGroup User
@@ -105,7 +105,7 @@ userRouter.route('/')
 
 
   /**
- * @api {post} /user Register User
+ * @api {post} https://hyte-janne.northeurope.cloudapp.azure.com/api/user Register User
  * @apiVersion 1.0.0
  * @apiName PostUser
  * @apiGroup User
@@ -147,7 +147,7 @@ userRouter.route('/')
   );
 
 /**
- * @api {get} /user/:id Get User by ID
+ * @api {get} https://hyte-janne.northeurope.cloudapp.azure.com/api/user/:id Get User by ID
  * @apiVersion 1.0.0
  * @apiName GetUserById
  * @apiGroup User
@@ -181,7 +181,7 @@ userRouter.route('/:id')
   .get(authenticateToken, getUserById)
 
   /**
- * @api {delete} /user/:id Delete User by ID
+ * @api {delete} https://hyte-janne.northeurope.cloudapp.azure.com/api/user/:id Delete User by ID
  * @apiVersion 1.0.0
  * @apiName DeleteUserById
  * @apiGroup User
