@@ -12,7 +12,6 @@ pm2 start src/index.js
 
 https://hyte-janne.northeurope.cloudapp.azure.com/home.html
 
-
 # Link to API Documentation
 
 https://hyte-janne.northeurope.cloudapp.azure.com/docs/
@@ -66,6 +65,7 @@ content-type: application/json
 
 # Update existing userdata (token required)
 Updates are visible after user presses getusers button
+
 PUT https://hyte-janne.northeurope.cloudapp.azure.com/api/users/
 Authorization: Bearer <token>
 content-type: application/json
@@ -104,7 +104,12 @@ DELETE https://hyte-janne.northeurope.cloudapp.azure.com/api/entries/:id
 ![image](https://github.com/janne02/server_be_hyte/assets/35040807/1aa2e43f-f6b6-4f91-9032-4091b31b8af8)
 
 # Known bugs / issues
-I encountered difficulty implementing automatic logout when a user deletes their own account.
+I encountered difficulty implementing automatic logout when a user deletes his/hers own account.
+
+# References
+Dark mode tutorial youtube video
+
+W3schools.com
 
 # Contributors
 Course teachers: Matti Peltoniemi and Ulla Sederlöf at Metropolia UAS.
